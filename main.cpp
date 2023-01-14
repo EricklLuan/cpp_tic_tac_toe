@@ -1,14 +1,18 @@
 #define SDL_MAIN_HANDLED
 
 #include "../include/window.hpp"
+#include "../include/input.hpp"
 
 int main(void) {
 
   Window window = Window("Jogo Da Velha", 600, 600);
+  Input input;
 
   SDL_Event event;
 
   while (true) {
+    input.new_frame();
+
     if (SDL_PollEvent(&event)) {
       switch (event.type) {
       case SDL_QUIT:
@@ -16,13 +20,19 @@ int main(void) {
         break;
 
       case SDL_KEYDOWN:
-        if (event.key.keysym.scancode == SDL_SCANCODE_ESCAPE) return false;
+        if (event.key.repeat == 0) input.key_down_event(&event);
+        break;
+
+      case SDL_KEYUP:
+        input.key_up_event(&event);
         break;
 
       default:
         break;
       }
     }
+
+    if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
 
     window.clear();
 
