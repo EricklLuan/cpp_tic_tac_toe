@@ -3,7 +3,12 @@ project(jogo_da_velha VERSION 0.1.0)
 
 find_package(SDL2 CONFIG REQUIRED)
 
-add_executable(jogo_da_velha main.cpp)
+file(GLOB_RECURSE HEADERS "include/*.hpp")
+file(GLOB SOURCES "src/*.cpp")
+
+include_directories("./include")
+
+add_executable(jogo_da_velha main.cpp ${SOURCES} ${HEADERS})
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
