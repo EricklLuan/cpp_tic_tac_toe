@@ -2,6 +2,7 @@
 
 #include "../include/window.hpp"
 #include "../include/input.hpp"
+#include "../include/entity.hpp"
 
 #include <iostream>
 
@@ -14,16 +15,17 @@ int main(void) {
 
   SDL_Event event;
 
+  Entity image = Entity(window.get_renderer(), Vector2(2000.0f, 2634.0f), Vector2(0.0f, 0.0f), "assets/mario.png");
+  image.scale = Vector2(0.1f, 0.1f);
+
+  SDL_SetRenderDrawColor(window.get_renderer(), 50, 50, 50, 255);
   while (true) {
   
     if (!events(event, input)) return false; 
-
     if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
-    if (input.getMouseHeld(SDL_BUTTON_LEFT) == true)
-    std::cout << input.mouse.x << ", " << input.mouse.y << "\n";
 
     window.clear();
-    SDL_SetRenderDrawColor(window.get_renderer(), 100, 100, 100, 255);
+    window.render(&image);
     window.flip();
   }
 

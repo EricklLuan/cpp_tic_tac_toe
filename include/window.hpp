@@ -2,6 +2,8 @@
 
 #include <SDL2/SDL.h>
 
+struct Entity;
+
 class Window {
 private:
   SDL_Window* _window;
@@ -12,6 +14,8 @@ public:
   
   inline void clear() { SDL_RenderClear(_renderer); };
   inline void flip() { SDL_RenderPresent(_renderer); };
+
+  void render(Entity *entity);
 
   inline SDL_Window* get_window() { return this->_window; }
   inline SDL_Renderer* get_renderer() { return this->_renderer; }
