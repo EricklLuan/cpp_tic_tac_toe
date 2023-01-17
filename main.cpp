@@ -13,19 +13,29 @@ int main(void) {
   Window window = Window("Jogo Da Velha", 600, 600);
   Input input;
 
+  Entity rect = Entity(
+    window.get_renderer(), 
+    Vector2(64.0f, 64.0f), 
+    Vector2(0.0f, 0.0f), 
+    Vector3(125.0f, 125.0f, 125.0f), 
+    ""
+  );
+
   SDL_Event event;
 
-  Entity image = Entity(window.get_renderer(), Vector2(2000.0f, 2634.0f), Vector2(0.0f, 0.0f), "assets/mario.png");
-  image.scale = Vector2(0.1f, 0.1f);
-
-  SDL_SetRenderDrawColor(window.get_renderer(), 50, 50, 50, 255);
   while (true) {
   
     if (!events(event, input)) return false; 
     if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
 
+    if (rect.checkIfCollideWith(input.getMouseCollision())) {
+      if (input.getMousePressed(SDL_BUTTON_LEFT)) {
+        std::cout << "Collide" << "\n";
+      }
+    }
+
     window.clear();
-    window.render(&image);
+    window.render(&rect);
     window.flip();
   }
 
@@ -59,6 +69,8 @@ bool events(SDL_Event &event, Input &input) {
 
     default:
       input.mouse = event.button;
+      input.getMouseCollision()->x = input.mouse.x;
+      input.getMouseCollision()->y = input.mouse.y;
       break;
     }
   }

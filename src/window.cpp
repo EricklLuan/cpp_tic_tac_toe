@@ -57,5 +57,16 @@ void Window::render(Entity *entity) {
   destination.w = entity->getSize().x * entity->scale.x;
   destination.h = entity->getSize().y * entity->scale.y;
 
-  SDL_RenderCopy(_renderer, entity->getTexture(), &source, &destination);
+  entity->getCollision()->x = destination.x;
+  entity->getCollision()->y = destination.y;
+  entity->getCollision()->w = destination.w;
+  entity->getCollision()->h = destination.h;
+
+  if (entity->getTexture() == NULL) {
+    SDL_SetRenderDrawColor(_renderer, entity->getColor().x, entity->getColor().y, entity->getColor().z, 255);
+    SDL_RenderDrawRect(_renderer, &destination);
+    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
+  } else {
+    SDL_RenderCopy(_renderer, entity->getTexture(), &source, &destination);
+  }
 }

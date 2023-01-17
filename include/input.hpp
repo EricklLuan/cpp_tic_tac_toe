@@ -13,6 +13,13 @@ private:
   std::map<Uint8, bool> _mouseHeld;
   std::map<Uint8, bool> _mouseRelesead;
 
+  SDL_Rect mouseCollision = {
+    0,
+    0,
+    2,
+    2
+  };
+
 public:
   SDL_MouseButtonEvent mouse;
 
@@ -31,5 +38,7 @@ public:
   bool getMouseRelesead(Uint8 mouseButton);
   bool getMousePressed(Uint8 mouseButton);
   bool getMouseHeld(Uint8 mouseButton);
+
+  inline SDL_Rect* getMouseCollision() { return &mouseCollision; };
 
 };
