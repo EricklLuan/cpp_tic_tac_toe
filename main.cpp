@@ -3,6 +3,7 @@
 #include "../include/window.hpp"
 #include "../include/input.hpp"
 #include "../include/entity.hpp"
+#include "../include/draw.hpp"
 
 #include <iostream>
 
@@ -12,14 +13,27 @@ int main(void) {
 
   Window window = Window("Jogo Da Velha", 600, 600);
   Input input;
+  Draw draw;
 
   Entity rect = Entity(
     window.get_renderer(), 
-    Vector2(64.0f, 64.0f), 
+    Vector2(200.0f, 200.0f), 
     Vector2(0.0f, 0.0f), 
-    Vector3(125.0f, 125.0f, 125.0f), 
+    Vector4(125.0f, 125.0f, 125.0f, 255.0f), 
     ""
   );
+
+  std::vector<Entity> entities = {
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+  };
 
   SDL_Event event;
 
@@ -28,14 +42,26 @@ int main(void) {
     if (!events(event, input)) return false; 
     if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
 
-    if (rect.checkIfCollideWith(input.getMouseCollision())) {
-      if (input.getMousePressed(SDL_BUTTON_LEFT)) {
-        std::cout << "Collide" << "\n";
+    for (int i = 0; i < entities.size(); i++) {
+      if(entities[i].checkIfCollideWith(input.getMouseCollision())) {
+        if (input.getMousePressed(SDL_BUTTON_LEFT)) {
+          *entities[i].getColor() = Vector4(rand() * 255, rand() * 255, rand() * 255, 255); 
+        }
       }
     }
+    
 
     window.clear();
-    window.render(&rect);
+    
+    SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
+
+    window.render(&entities);
+
+    draw.line(window.get_renderer(), Vector2(200, 0), Vector2(200, 600), Vector4(0, 0, 0, 255));
+    draw.line(window.get_renderer(), Vector2(400, 0), Vector2(400, 600), Vector4(0, 0, 0, 255));
+    draw.line(window.get_renderer(), Vector2(0, 200), Vector2(600, 200), Vector4(0, 0, 0, 255));
+    draw.line(window.get_renderer(), Vector2(0, 400), Vector2(600, 400), Vector4(0, 0, 0, 255));
+
     window.flip();
   }
 

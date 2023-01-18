@@ -44,29 +44,31 @@ Window::~Window() {
   SDL_Quit();
 }
 
-void Window::render(Entity *entity) {
-  SDL_Rect source;
-  source.x = entity->getCurrentFrame().x;
-  source.y = entity->getCurrentFrame().y;
-  source.w = entity->getCurrentFrame().w;
-  source.h = entity->getCurrentFrame().h;
+void Window::render(std::vector<Entity> *entities) {
+  for (Entity entity: *entities) {
+    SDL_Rect source;
+    source.x = entity.getCurrentFrame().x;
+    source.y = entity.getCurrentFrame().y;
+    source.w = entity.getCurrentFrame().w;
+    source.h = entity.getCurrentFrame().h;
 
-  SDL_Rect destination;
-  destination.x = entity->position.x;
-  destination.y = entity->position.y;
-  destination.w = entity->getSize().x * entity->scale.x;
-  destination.h = entity->getSize().y * entity->scale.y;
+    SDL_Rect destination;
+    destination.x = entity.position.x;
+    destination.y = entity.position.y;
+    destination.w = entity.getSize().x * entity.scale.x;
+    destination.h = entity.getSize().y * entity.scale.y;
 
-  entity->getCollision()->x = destination.x;
-  entity->getCollision()->y = destination.y;
-  entity->getCollision()->w = destination.w;
-  entity->getCollision()->h = destination.h;
+    entity.getCollision()->x = destination.x;
+    entity.getCollision()->y = destination.y;
+    entity.getCollision()->w = destination.w;
+    entity.getCollision()->h = destination.h;
 
-  if (entity->getTexture() == NULL) {
-    SDL_SetRenderDrawColor(_renderer, entity->getColor().x, entity->getColor().y, entity->getColor().z, 255);
-    SDL_RenderDrawRect(_renderer, &destination);
-    SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
-  } else {
-    SDL_RenderCopy(_renderer, entity->getTexture(), &source, &destination);
+    if (entity.getTexture() == NULL) {
+      SDL_SetRenderDrawColor(_renderer, entity.getColor()->x, entity.getColor()->y, entity.getColor()->z, entity.getColor()->w);
+      SDL_RenderFillRect(_renderer, &destination);
+      SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
+    } else {
+      SDL_RenderCopy(_renderer, entity.getTexture(), &source, &destination);
+    }
   }
 }

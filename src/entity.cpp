@@ -4,13 +4,20 @@
 #include <iostream>
 #include <string.h>
 
-Entity::Entity(SDL_Renderer* renderer, Vector2 _size, Vector2 _position, Vector3 _color, const char* path = "")
+Entity::Entity(SDL_Renderer* renderer, Vector2 _size, Vector2 _position, Vector4 _color, const char* path = "")
 : size(_size), position(_position)
 {
   currentFrame.x = 0;
   currentFrame.y = 0;
   currentFrame.w = size.x;
   currentFrame.h = size.y;
+
+  collision = {
+    (int)position.x,
+    (int)position.y,
+    (int)size.x,
+    (int)size.y,
+  };
 
   const char* str = "";
   if (strcmp(path, str) != 0) {
@@ -21,7 +28,6 @@ Entity::Entity(SDL_Renderer* renderer, Vector2 _size, Vector2 _position, Vector3
     }
   } else {
     color = _color;
-    std::cout << "color";
   }
 }
 
