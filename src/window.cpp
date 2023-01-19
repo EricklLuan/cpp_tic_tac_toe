@@ -30,7 +30,7 @@ Window::Window(const char* title, int width, int height) {
   _renderer = SDL_CreateRenderer(
     _window,
     -1,
-    SDL_RENDERER_PRESENTVSYNC
+    0
   );
 
   if (_renderer == NULL) {
@@ -66,7 +66,6 @@ void Window::render(std::vector<Entity> *entities) {
     if (entity.getTexture() == NULL) {
       SDL_SetRenderDrawColor(_renderer, entity.getColor()->x, entity.getColor()->y, entity.getColor()->z, entity.getColor()->w);
       SDL_RenderFillRect(_renderer, &destination);
-      SDL_SetRenderDrawColor(_renderer, 255, 255, 255, 255);
     } else {
       SDL_RenderCopy(_renderer, entity.getTexture(), &source, &destination);
     }

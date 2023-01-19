@@ -18,7 +18,7 @@ public:
 
   Entity(SDL_Renderer* renderer, Vector2 _size, Vector2 _position, Vector4 _color, const char* path);
 
-  bool checkIfCollideWith(SDL_Rect* collider); 
+  bool checkIfCollideWith(SDL_Rect* collider);
 
   inline SDL_Texture* getTexture() { return texture; };
   inline SDL_Rect *getCollision() { return &collision; };
@@ -26,4 +26,5 @@ public:
   inline Vector2 getSize() { return size; };
   inline Vector4 *getColor() { return &color; };
 
+  void setTexture(SDL_Renderer* renderer, const char* path);
 };

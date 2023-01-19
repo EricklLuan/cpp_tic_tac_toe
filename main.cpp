@@ -15,27 +15,21 @@ int main(void) {
   Input input;
   Draw draw;
 
-  Entity rect = Entity(
-    window.get_renderer(), 
-    Vector2(200.0f, 200.0f), 
-    Vector2(0.0f, 0.0f), 
-    Vector4(125.0f, 125.0f, 125.0f, 255.0f), 
-    ""
-  );
-
   std::vector<Entity> entities = {
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 0.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 200.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 400.0f), Vector4(125.0f, 125.0f, 125.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
   };
 
   SDL_Event event;
+
+  int player = 0;
 
   while (true) {
   
@@ -45,12 +39,17 @@ int main(void) {
     for (int i = 0; i < entities.size(); i++) {
       if(entities[i].checkIfCollideWith(input.getMouseCollision())) {
         if (input.getMousePressed(SDL_BUTTON_LEFT)) {
-          *entities[i].getColor() = Vector4(rand() * 255, rand() * 255, rand() * 255, 255); 
+          if (player == 0) {
+            entities[i].setTexture(window.get_renderer(), "assets/o.png");
+            player = 1;
+          } else if (player == 1) {
+            entities[i].setTexture(window.get_renderer(), "assets/x.png");
+            player = 0;
+          }
         }
       }
     }
     
-
     window.clear();
     
     SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);

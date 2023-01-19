@@ -54,3 +54,12 @@ bool Entity::checkIfCollideWith(SDL_Rect *collider) {
 
     return true;
 }
+
+void Entity::setTexture(SDL_Renderer* renderer, const char *path) {
+  texture = IMG_LoadTexture(renderer, path);
+
+  if (texture == NULL) {
+    std::cout << "SDL::CREATE::TEXTURE::ERROR: " << SDL_GetError() << "\n";
+  }
+
+}
