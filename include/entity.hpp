@@ -15,6 +15,7 @@ private:
 public:
   Vector2 scale = Vector2(1.0f, 1.0f);
   Vector2 position = Vector2(0.0f, 0.0f);
+  bool active = true;
 
   Entity(SDL_Renderer* renderer, Vector2 _size, Vector2 _position, Vector4 _color, const char* path);
 

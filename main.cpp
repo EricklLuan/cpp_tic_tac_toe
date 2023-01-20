@@ -30,6 +30,11 @@ int main(void) {
   SDL_Event event;
 
   int player = 0;
+  int game[3][3] = {
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0}
+  };
 
   while (true) {
   
@@ -37,8 +42,8 @@ int main(void) {
     if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
 
     for (int i = 0; i < entities.size(); i++) {
-      if(entities[i].checkIfCollideWith(input.getMouseCollision())) {
-        if (input.getMousePressed(SDL_BUTTON_LEFT)) {
+      if (entities[i].active == true) {
+        if(entities[i].checkIfCollideWith(input.getMouseCollision()) && input.getMousePressed(SDL_BUTTON_LEFT)) {
           if (player == 0) {
             entities[i].setTexture(window.get_renderer(), "assets/o.png");
             player = 1;
@@ -46,6 +51,7 @@ int main(void) {
             entities[i].setTexture(window.get_renderer(), "assets/x.png");
             player = 0;
           }
+          entities[i].active = false;
         }
       }
     }
