@@ -61,5 +61,9 @@ void Entity::setTexture(SDL_Renderer* renderer, const char *path) {
   if (texture == NULL) {
     std::cout << "SDL::CREATE::TEXTURE::ERROR: " << SDL_GetError() << "\n";
   }
+}
 
+void Entity::clear() {
+  texture = NULL;
+  active = true;
 }

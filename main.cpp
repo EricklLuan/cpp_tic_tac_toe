@@ -8,6 +8,9 @@
 #include <iostream>
 
 bool events(SDL_Event &event, Input &input);
+void scene(Window &window, Input &input, std::vector<Entity> &entities);
+
+int player = 0;
 
 int main(void) {
 
@@ -16,49 +19,27 @@ int main(void) {
   Draw draw;
 
   std::vector<Entity> entities = {
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 0.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 200.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
-    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 400.0f), Vector4(255.0f, 255.0f, 255.0f, 255.0f), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 0.0f),     Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 0.0f),   Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 0.0f),   Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 200.0f),   Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 200.0f), Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 200.0f), Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(0.0f, 400.0f),   Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(200.0f, 400.0f), Vector4().white(), ""),
+    Entity(window.get_renderer(), Vector2(200.0f, 200.0f), Vector2(400.0f, 400.0f), Vector4().white(), ""),
   };
 
   SDL_Event event;
-
-  int player = 0;
-  int game[3][3] = {
-    {0, 0, 0},
-    {0, 0, 0},
-    {0, 0, 0}
-  };
 
   while (true) {
   
     if (!events(event, input)) return false; 
     if (input.getKeyPressed(SDL_SCANCODE_ESCAPE) == true) return true;
 
-    for (int i = 0; i < entities.size(); i++) {
-      if (entities[i].active == true) {
-        if(entities[i].checkIfCollideWith(input.getMouseCollision()) && input.getMousePressed(SDL_BUTTON_LEFT)) {
-          if (player == 0) {
-            entities[i].setTexture(window.get_renderer(), "assets/o.png");
-            player = 1;
-          } else if (player == 1) {
-            entities[i].setTexture(window.get_renderer(), "assets/x.png");
-            player = 0;
-          }
-          entities[i].active = false;
-        }
-      }
-    }
-    
     window.clear();
     
-    SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
+    scene(window, input, entities);
 
     window.render(&entities);
 
@@ -71,6 +52,29 @@ int main(void) {
   }
 
   return 0;
+}
+
+void scene(Window &window, Input &input, std::vector<Entity> &entities) {
+  SDL_SetRenderDrawColor(window.get_renderer(), 255, 255, 255, 255);
+  for (int i = 0; i < entities.size(); i++) {
+    if (entities[i].active == true) {
+      if(entities[i].checkIfCollideWith(input.getMouseCollision()) && input.getMousePressed(SDL_BUTTON_LEFT)) {
+        if (player == 0) {
+          entities[i].setTexture(window.get_renderer(), "assets/o.png");
+          player = 1;
+        } else if (player == 1) {
+          entities[i].setTexture(window.get_renderer(), "assets/x.png");
+          player = 0;
+        }
+        entities[i].active = false;
+      }
+    }
+
+    if (input.getKeyPressed(SDL_SCANCODE_R)) {
+      entities[i].clear();
+      player = 0;
+    }
+  }
 }
 
 bool events(SDL_Event &event, Input &input) {
